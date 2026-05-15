@@ -1,6 +1,6 @@
 # Orchestration — Pipeline and Handoff Contract
 
-The `fullstack-orchestrator` runs a 7-phase pipeline. Each phase dispatches one or more specialists in series or parallel. This document is the **contract** between the orchestrator and the specialists — what each phase passes, expects back, and how failures escalate.
+The `fullstack-orchestrator` runs an 8-phase pipeline. Each phase dispatches one or more specialists in series or parallel. This document is the **contract** between the orchestrator and the specialists — what each phase passes, expects back, and how failures escalate.
 
 ## The pipeline
 
@@ -30,6 +30,9 @@ The `fullstack-orchestrator` runs a 7-phase pipeline. Each phase dispatches one 
                                   │
                                   ▼
             Phase 7  ───  devops-engineer          ──► deploy URL + smoke results
+                                  │
+                                  ▼
+            Phase 8  ───  memory-keeper            ──► memories written to ~/.claude-personal/.../memory/
                                   │
                                   ▼
                          ┌────────────────┐
@@ -98,6 +101,13 @@ Dispatched in parallel. Same severity format. The overengineering-checker uses t
 - **Output:** deploy URL + smoke-test results (curl the new endpoint, hit the new page, etc.).
 - **Skip when:** the project has no deploy target wired.
 
+### Phase 8 — memory-keeper
+
+- **Inputs:** user request, spec, all review reports, tech-lead verdict, deploy result, any inline user corrections from the run, and the absolute path to the user's auto-memory dir (`~/.claude-personal/projects/<slug>/memory/`).
+- **Output:** a count of memories written, updated, and skipped. Writes one file per memory plus an index update in `MEMORY.md`.
+- **Always runs**, even after escalation. Writes nothing if the run produced no cross-conversation signal or if the memory dir does not exist.
+- **Scope guard:** memory-keeper writes ONLY inside the memory directory. It never edits repo files, CLAUDE.md, or anything outside the dir.
+
 ## Retry / escalation policy
 
 - A `[CRITICAL]` finding from phase 4 or 5 → orchestrator loops back to phase 3 with a focused brief: "fix these specific findings, do not touch anything else."
@@ -134,6 +144,7 @@ Reviews:
   overengineering:    aligned / minor bloat / significant bloat
 Tech-lead:      approve / changes-requested
 Deploy:         <URL or skipped>
+Memory:         <n written, n updated> / none
 
 Open warnings: <list, if any>
 ```
