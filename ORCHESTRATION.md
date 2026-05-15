@@ -1,6 +1,6 @@
 # Orchestration — Pipeline and Handoff Contract
 
-The `fullstack-orchestrator` runs an 8-phase pipeline. Each phase dispatches one or more specialists in series or parallel. This document is the **contract** between the orchestrator and the specialists — what each phase passes, expects back, and how failures escalate.
+The `fullstack-orchestrator` runs a 9-phase pipeline. Each phase dispatches one or more specialists in series or parallel. This document is the **contract** between the orchestrator and the specialists — what each phase passes, expects back, and how failures escalate.
 
 ## The pipeline
 
@@ -29,10 +29,13 @@ The `fullstack-orchestrator` runs an 8-phase pipeline. Each phase dispatches one
             Phase 6  ───  tech-lead                ──► approve / changes-requested
                                   │
                                   ▼
-            Phase 7  ───  devops-engineer          ──► deploy URL + smoke results
+            Phase 7  ───  docs-writer             ──► README / CHANGELOG / docs/** patches (skips if no surface)
                                   │
                                   ▼
-            Phase 8  ───  memory-keeper            ──► memories written to ~/.claude-personal/.../memory/
+            Phase 8  ───  devops-engineer          ──► deploy URL + smoke results
+                                  │
+                                  ▼
+            Phase 9  ───  memory-keeper            ──► memories written to ~/.claude-personal/.../memory/
                                   │
                                   ▼
                          ┌────────────────┐
@@ -95,13 +98,21 @@ Dispatched in parallel. Same severity format. The overengineering-checker uses t
 - **Inputs:** spec.md, diff, all review reports from phases 4 and 5.
 - **Output:** `approve` / `changes-requested` with rationale. This is the merge gate.
 
-### Phase 7 — devops-engineer
+### Phase 7 — docs-writer
 
-- **Inputs:** approved diff.
+- **Inputs:** spec.md, diff, tech-lead verdict (must be `approve`), stack.
+- **Output:** a count of doc files written / updated / skipped. Writes only inside the docs allowlist (`README.md`, `CHANGELOG.md`, `docs/**`, existing top-level `*.md` like `UPGRADING.md`).
+- **Trigger filter:** runs only when the diff has a documentable surface — new env vars, new scripts, new routes/endpoints, new public API, breaking changes, or new setup steps. Otherwise returns `skipped — no documentable surface changed`.
+- **Skip when:** tech-lead returned `changes-requested`, OR the diff has no documentable surface, OR the project has no docs convention (no README and no `docs/`).
+- **Scope guard:** writes ONLY inside the docs allowlist. Never edits source code, configs, tests, or `.env*`.
+
+### Phase 8 — devops-engineer
+
+- **Inputs:** approved diff (including any docs patches from phase 7).
 - **Output:** deploy URL + smoke-test results (curl the new endpoint, hit the new page, etc.).
 - **Skip when:** the project has no deploy target wired.
 
-### Phase 8 — memory-keeper
+### Phase 9 — memory-keeper
 
 - **Inputs:** user request, spec, all review reports, tech-lead verdict, deploy result, any inline user corrections from the run, and the absolute path to the user's auto-memory dir (`~/.claude-personal/projects/<slug>/memory/`).
 - **Output:** a count of memories written, updated, and skipped. Writes one file per memory plus an index update in `MEMORY.md`.
@@ -143,6 +154,7 @@ Reviews:
   code:               ✅ / ❌  (...)
   overengineering:    aligned / minor bloat / significant bloat
 Tech-lead:      approve / changes-requested
+Docs:           <n files updated> / skipped
 Deploy:         <URL or skipped>
 Memory:         <n written, n updated> / none
 
