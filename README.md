@@ -1,6 +1,6 @@
 # arya
 
-A 12-agent team for fullstack feature work. Runs an 8-phase pipeline: PM, design, implement, verify, code review, tech lead, ship, memory. Stack-agnostic.
+A 13-agent team for fullstack feature work. Runs a 9-phase pipeline: PM, design, implement, verify, code review, tech lead, docs, ship, memory. Stack-agnostic.
 
 ## Install
 
@@ -42,8 +42,9 @@ Use the overengineering-checker on this PR.
 4. verify          qa-engineer + security-reviewer + ui-ux-reviewer  (parallel)
 5. code review     code-reviewer + overengineering-checker  (parallel)
 6. final review    tech-lead  (merge gate)
-7. ship            devops-engineer
-8. memory          memory-keeper  (persist cross-session learnings)
+7. docs            docs-writer  (patch README / CHANGELOG / docs when surface changes)
+8. ship            devops-engineer
+9. memory          memory-keeper  (persist cross-session learnings)
 ```
 
 See [ORCHESTRATION.md](./ORCHESTRATION.md) for the handoff contract and retry policy.
@@ -62,6 +63,7 @@ See [ORCHESTRATION.md](./ORCHESTRATION.md) for the handoff contract and retry po
 | `code-reviewer` | Line-by-line correctness. Read-only. | Read, Grep, Glob, Bash |
 | `overengineering-checker` | Karpathy-principle simplicity audit. Read-only. | Read, Grep, Glob, Bash |
 | `tech-lead` | Final merge gate, architecture review. Read-only. | Read, Grep, Glob, Bash |
+| `docs-writer` | Patches README / CHANGELOG / docs/** when the diff changes a documentable surface. Scoped to docs paths. | Read, Write, Edit, Bash, Grep, Glob |
 | `devops-engineer` | Deploy and smoke verify. | Read, Bash, Vercel MCP, Supabase MCP |
 | `memory-keeper` | Persists non-obvious learnings to `~/.claude-personal/.../memory/` after the run. | Read, Write, Edit, Bash, Grep, Glob |
 
