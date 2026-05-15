@@ -60,12 +60,14 @@ Every dispatch follows the briefing template in `templates/handoff.md`. The orch
 - **Inputs:** spec.md, any Figma URLs from the request.
 - **Output:** layout / IA / accessibility notes BEFORE implementation. Read-only.
 - **Skip when:** request is backend-only.
+- **With impeccable installed:** the reviewer calls `/impeccable critique` on the spec or design context to surface opinionated direction (color strategy, type system, motion register) before any code is written.
 
 ### Phase 3 — backend-engineer + frontend-engineer
 
 - **Inputs:** spec.md, scope (file paths), stack.
 - **Output:** list of changed files + one-paragraph rationale per file. No long internal logs.
 - **Parallel rule:** dispatch both in the same orchestrator message if their scopes don't overlap. If FE depends on BE contracts (e.g. new API route), run BE first and pass the route signature to FE.
+- **With impeccable installed:** `frontend-engineer` picks the matching `/impeccable` command for the work (`craft` for new UI, `polish` for cleanup, `layout` for structural, `animate` for motion) and loads the relevant reference file before writing code.
 
 ### Phase 4 — qa-engineer, security-reviewer, ui-ux-reviewer
 
@@ -79,7 +81,7 @@ Dispatched in parallel. Each returns findings in `review-report.md` format:
 
 - **qa-engineer** writes tests, runs them, returns pass/fail + new test file paths.
 - **security-reviewer** read-only OWASP-style audit on the diff.
-- **ui-ux-reviewer** read-only check vs spec / design system.
+- **ui-ux-reviewer** read-only check vs spec / design system. With impeccable installed: runs `/impeccable critique` for opinionated review and `/impeccable audit` for the deterministic anti-pattern sweep.
 
 ### Phase 5 — code-reviewer + overengineering-checker
 
