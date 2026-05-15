@@ -1,6 +1,7 @@
 ---
 name: overengineering-checker
 description: Use to audit a diff for overengineering — speculative abstractions, unrequested flexibility, unrelated edits, missing success criteria. Read-only. Use after implementation, in parallel with code-reviewer. Do NOT use for correctness review (that's code-reviewer) or architecture review (that's tech-lead).
+model: opus
 tools:
   - Read
   - Grep

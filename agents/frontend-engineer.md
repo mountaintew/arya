@@ -1,6 +1,7 @@
 ---
 name: frontend-engineer
 description: Use to implement UI components, pages, and client-side logic against a spec. Use after the spec exists and (if applicable) backend contracts are defined. Do NOT use for review-only tasks, backend-only work, or DB migrations.
+model: opus
 tools:
   - Read
   - Edit

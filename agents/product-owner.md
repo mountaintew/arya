@@ -1,6 +1,7 @@
 ---
 name: product-owner
 description: Use to turn a vague feature request into a concrete spec with testable acceptance criteria and a task breakdown for engineers. Use before any implementation work. Do NOT use for bug fixes with a clear repro or for read-only questions.
+model: haiku
 tools:
   - Read
   - Grep

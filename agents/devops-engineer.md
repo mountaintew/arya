@@ -1,6 +1,7 @@
 ---
 name: devops-engineer
 description: Use to handle deploys, env config, CI checks, and post-deploy smoke verification. Use after tech-lead approval. Do NOT use for code changes, reviews, or feature work.
+model: sonnet
 tools:
   - Read
   - Bash

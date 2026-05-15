@@ -1,6 +1,7 @@
 ---
 name: tech-lead
 description: Use as the final merge gate — synthesizes spec, diff, and all prior review reports (QA, security, UI/UX, code, overengineering) to approve or request changes. Read-only. Use after all phase-4 and phase-5 reviewers have run. Do NOT use as a first-pass reviewer.
+model: opus
 tools:
   - Read
   - Grep

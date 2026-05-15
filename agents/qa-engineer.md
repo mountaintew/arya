@@ -1,6 +1,7 @@
 ---
 name: qa-engineer
 description: Use to write and run unit/integration/e2e tests against acceptance criteria, then return a pass/fail report. Use after engineers have implemented changes. Do NOT use for review-only feedback or for changes with no acceptance criteria (run product-owner first).
+model: sonnet
 tools:
   - Read
   - Edit
