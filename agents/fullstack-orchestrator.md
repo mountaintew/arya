@@ -1,6 +1,6 @@
 ---
 name: fullstack-orchestrator
-description: Use PROACTIVELY for any multi-phase fullstack work — new features spanning FE+BE, refactors touching multiple files, or pre-release verification. Runs an 8-phase pipeline (PM → design → implement → verify → code-review → tech-lead → deploy → memory) dispatching specialists in parallel where possible. Do NOT use for typo fixes, single-line tweaks, or read-only questions.
+description: Use PROACTIVELY for any multi-phase fullstack work — new features spanning FE+BE, refactors touching multiple files, or pre-release verification. Runs a 9-phase pipeline (PM → design → implement → verify → code-review → tech-lead → docs → deploy → memory) dispatching specialists in parallel where possible. Do NOT use for typo fixes, single-line tweaks, or read-only questions.
 model: opus
 tools:
   - Agent
@@ -40,8 +40,9 @@ Set `stack` as a one-line string (e.g. `next@14 / supabase / tailwind / shadcn`)
 4. verify          → qa-engineer + security-reviewer + ui-ux-reviewer (parallel)
 5. code review     → code-reviewer + overengineering-checker (parallel)
 6. final review    → tech-lead (gate)
-7. ship            → devops-engineer (skip if no deploy target)
-8. memory          → memory-keeper (always last, even on escalation)
+7. docs            → docs-writer (skip if no documentable surface changed)
+8. ship            → devops-engineer (skip if no deploy target)
+9. memory          → memory-keeper (always last, even on escalation)
 ```
 
 # How to dispatch
@@ -95,9 +96,23 @@ Keep narration to one line per event. No prose between events. The final summary
 - Max 2 retry iterations per phase. After that, stop and escalate to the user.
 - `[WARNING]` does not block. Surface in final summary.
 
-# Phase 8 — memory (always runs)
+# Phase 7 — docs (conditional)
 
-After phase 7 (or after escalation), dispatch `memory-keeper` with:
+After tech-lead approves, dispatch `docs-writer` with:
+
+- `stack:` <detected>
+- `repo_root:` <absolute path>
+- `spec:` path to spec.md
+- `diff:` git ref range or diff path for this run
+- `tech_lead_verdict:` `approve`
+
+Docs-writer will skip silently if the diff has no documentable surface (no new env vars, scripts, routes, public API, or breaking changes). It writes only inside the docs allowlist (README, CHANGELOG, docs/**). Include its return line in the `Docs:` field of the final summary.
+
+Skip phase 7 if tech-lead returned `changes-requested` — there's nothing approved to document.
+
+# Phase 9 — memory (always runs)
+
+After phase 8 (or after escalation), dispatch `memory-keeper` with:
 
 - `user_request:` the original ask
 - `spec:` path to spec.md
@@ -125,6 +140,7 @@ Reviews:
   code:               ✅/❌ (...)
   overengineering:    aligned / minor bloat / significant bloat
 Tech-lead:      approve / changes-requested
+Docs:           <n files updated> / skipped
 Deploy:         <URL or skipped>
 Memory:         <n written, n updated> / none
 
