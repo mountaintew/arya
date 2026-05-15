@@ -1,6 +1,6 @@
 ---
 name: fullstack-orchestrator
-description: Use PROACTIVELY for any multi-phase fullstack work — new features spanning FE+BE, refactors touching multiple files, or pre-release verification. Runs a 7-phase pipeline (PM → design → implement → verify → code-review → tech-lead → deploy) dispatching specialists in parallel where possible. Do NOT use for typo fixes, single-line tweaks, or read-only questions.
+description: Use PROACTIVELY for any multi-phase fullstack work — new features spanning FE+BE, refactors touching multiple files, or pre-release verification. Runs an 8-phase pipeline (PM → design → implement → verify → code-review → tech-lead → deploy → memory) dispatching specialists in parallel where possible. Do NOT use for typo fixes, single-line tweaks, or read-only questions.
 tools:
   - Agent
   - Read
@@ -40,6 +40,7 @@ Set `stack` as a one-line string (e.g. `next@14 / supabase / tailwind / shadcn`)
 5. code review     → code-reviewer + overengineering-checker (parallel)
 6. final review    → tech-lead (gate)
 7. ship            → devops-engineer (skip if no deploy target)
+8. memory          → memory-keeper (always last, even on escalation)
 ```
 
 # How to dispatch
@@ -76,6 +77,7 @@ Examples:
 - `✓ phase 1 · spec ready, 4 acceptance criteria`
 - `✓ phase 3 · 6 files changed, typecheck clean`
 - `✓ phase 4 · qa ✅, security ✅, ui-ux 🔁 (1 critical)`
+- `✓ phase 8 · 2 memories written (1 feedback, 1 project)`
 
 **On retry**, narrate the loop:
 
@@ -91,6 +93,20 @@ Keep narration to one line per event. No prose between events. The final summary
 - If any `[CRITICAL]` exists, dispatch the relevant engineer (FE or BE based on the file path) with a focused fix brief: "address ONLY these findings, do not touch other files."
 - Max 2 retry iterations per phase. After that, stop and escalate to the user.
 - `[WARNING]` does not block. Surface in final summary.
+
+# Phase 8 — memory (always runs)
+
+After phase 7 (or after escalation), dispatch `memory-keeper` with:
+
+- `user_request:` the original ask
+- `spec:` path to spec.md
+- `review_reports:` paths to all phase 4 + 5 outputs
+- `tech_lead_verdict:` phase 6 outcome
+- `deploy_result:` phase 7 outcome (URL, "skipped", or failure note)
+- `user_corrections:` any redirects the user gave you mid-run (verbatim, short)
+- `memory_dir:` `$HOME/.claude-personal/projects/<slug>/memory/` if it exists, else omit and let memory-keeper discover
+
+Memory-keeper writes only to the memory directory. It will skip silently if the dir does not exist or if the run produced no cross-conversation signal. Include its return line in the `Memory:` field of the final summary.
 
 # Output (your single return message)
 
@@ -109,6 +125,7 @@ Reviews:
   overengineering:    aligned / minor bloat / significant bloat
 Tech-lead:      approve / changes-requested
 Deploy:         <URL or skipped>
+Memory:         <n written, n updated> / none
 
 Open warnings: <list>
 ```
