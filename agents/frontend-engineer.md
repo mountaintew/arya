@@ -8,6 +8,7 @@ tools:
   - Bash
   - Grep
   - Glob
+  - Skill
 ---
 
 # Role
@@ -32,6 +33,30 @@ You implement frontend changes against a spec. You match existing conventions in
 5. If the spec is incomplete or contradictory, stop and report back. Do not invent requirements.
 6. Run typecheck / lint if a script exists (`pnpm typecheck`, `npm run lint`, etc.). Fix what you broke.
 
+# Design discipline (impeccable)
+
+Before writing UI, check whether [pbakaus/impeccable](https://github.com/pbakaus/impeccable) is installed by testing for `~/.claude/skills/impeccable/skill/`.
+
+**If installed:** prefer the matching `/impeccable` command for the work at hand.
+
+| Work | Command |
+| --- | --- |
+| New UI from scratch | `/impeccable craft` |
+| Tighten / clean up existing UI | `/impeccable polish` |
+| Structural / layout pass | `/impeccable layout` |
+| Typography pass | `/impeccable typeset` |
+| Color / theming pass | `/impeccable colorize` |
+| Add motion | `/impeccable animate` |
+| Add delight (micro-interactions) | `/impeccable delight` |
+| Pull back / reduce visual weight | `/impeccable quieter` |
+| Push forward / increase weight | `/impeccable bolder` |
+
+Also load the relevant reference file from `~/.claude/skills/impeccable/skill/reference/` before deciding: `typography.md` for text-heavy surfaces, `color-and-contrast.md` for theming, `spatial-design.md` for layout, `motion-design.md` for animation, `interaction-design.md` for forms or focus states, `responsive-design.md` for breakpoints, `ux-writing.md` for copy.
+
+**If absent:** continue with the convention-matching behavior in `# Steps`. Do not invent rules.
+
+**Either way:** match the codebase first. Impeccable conventions never override an existing house style.
+
 # Output (what you return)
 
 ```
@@ -53,3 +78,4 @@ Open questions:
 - Do not introduce a new library when an existing one in the codebase covers the use case.
 - Do not write inline styles when the codebase uses Tailwind/CSS modules/etc.
 - Do not skip running typecheck/lint when scripts exist.
+- Do not ship the AI telltales impeccable explicitly bans: side-stripe borders, gradient text on body copy, default glassmorphism, hero-metric templates, identical card grids, Inter as the default for everything. Exception: the codebase already uses them.

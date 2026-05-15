@@ -5,7 +5,7 @@ An 11-agent team for fullstack feature work. Runs a 7-phase pipeline: PM, design
 ## Install
 
 ```sh
-git clone https://github.com/mountaintew/arya.git
+git clone <this-repo>.git
 cd arya
 ./install.sh
 ```
@@ -71,6 +71,17 @@ Reviewers are tool-locked to read-only. They audit, they never edit.
 - Add a specialist: drop a new `<name>.md` in `agents/` and re-run `./install.sh`.
 - Tighten a role's permissions: shrink its `tools:` allowlist in the frontmatter.
 - Change the pipeline: edit `agents/fullstack-orchestrator.md` and `ORCHESTRATION.md` together so they stay in sync.
+
+## Recommended companion skill: impeccable
+
+`frontend-engineer` and `ui-ux-reviewer` lean on [pbakaus/impeccable](https://github.com/pbakaus/impeccable) when it's installed. Impeccable contributes a shared design vocabulary, 24 commands (`craft`, `polish`, `critique`, `audit`, `layout`, `animate`, etc.), 7 domain reference files, and 27 deterministic anti-pattern rules. Install from [impeccable.style](https://impeccable.style).
+
+What changes when impeccable is present:
+
+- `frontend-engineer` prefers `/impeccable craft|polish|layout|typeset|colorize|animate|delight` for the matching kind of work, and reads the relevant reference file before deciding.
+- `ui-ux-reviewer` runs `/impeccable critique` and `/impeccable audit` as the primary rubric, using impeccable's 7 references as vocabulary.
+
+Without impeccable, both agents fall back to generic convention-matching. Output is fine, just less opinionated.
 
 ## Layout
 
