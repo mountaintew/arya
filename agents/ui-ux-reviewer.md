@@ -1,6 +1,7 @@
 ---
 name: ui-ux-reviewer
 description: Use to review UI changes for layout, accessibility, design-system fit, and information architecture. Read-only. Can run pre-build (advisory on spec) or post-build (on the diff). Do NOT use it to make edits — it returns findings only.
+model: sonnet
 tools:
   - Read
   - Grep

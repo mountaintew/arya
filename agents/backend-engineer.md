@@ -1,6 +1,7 @@
 ---
 name: backend-engineer
 description: Use to implement API routes, server logic, DB schema, and migrations against a spec. Use after the spec exists. Do NOT use for review-only tasks, pure UI work, or one-off scripts unrelated to the product.
+model: opus
 tools:
   - Read
   - Edit

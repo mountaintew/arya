@@ -1,6 +1,7 @@
 ---
 name: fullstack-orchestrator
 description: Use PROACTIVELY for any multi-phase fullstack work — new features spanning FE+BE, refactors touching multiple files, or pre-release verification. Runs an 8-phase pipeline (PM → design → implement → verify → code-review → tech-lead → deploy → memory) dispatching specialists in parallel where possible. Do NOT use for typo fixes, single-line tweaks, or read-only questions.
+model: opus
 tools:
   - Agent
   - Read

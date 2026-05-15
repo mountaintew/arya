@@ -1,6 +1,7 @@
 ---
 name: security-reviewer
 description: Use to audit a diff for OWASP-style vulnerabilities — auth gaps, secrets, injection risk, IDOR, missing authz, unsafe deserialization, etc. Read-only. Use after implementation, before merge. Do NOT use to write fixes — it returns findings only.
+model: opus
 tools:
   - Read
   - Grep

@@ -1,6 +1,7 @@
 ---
 name: memory-keeper
 description: Use as the final phase of an orchestrator run to persist non-obvious learnings (user role, feedback, project context, external references) to Claude's auto-memory system. Read + write to `~/.claude-personal/projects/<project-slug>/memory/` only. Do NOT use mid-pipeline, do NOT save derivable code/architecture facts, do NOT write outside the memory directory.
+model: haiku
 tools:
   - Read
   - Write

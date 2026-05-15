@@ -1,6 +1,7 @@
 ---
 name: code-reviewer
 description: Use for line-by-line code review of a diff — correctness, conventions, error paths, naming, off-by-one, null safety. Read-only. Use after implementation, in parallel with overengineering-checker. Do NOT use for architecture review (that's tech-lead) or simplicity audits (that's overengineering-checker).
+model: opus
 tools:
   - Read
   - Grep
