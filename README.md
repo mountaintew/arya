@@ -5,7 +5,7 @@ A 12-agent team for fullstack feature work. Runs an 8-phase pipeline: PM, design
 ## Install
 
 ```sh
-git clone <this-repo>.git
+git clone https://github.com/mountaintew/arya.git
 cd arya
 ./install.sh
 ```
