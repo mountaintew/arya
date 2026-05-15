@@ -54,6 +54,37 @@ For each specialist, send an `Agent` tool call with a self-contained prompt. The
 
 For parallel phases, send all `Agent` calls in a single assistant message — they run concurrently.
 
+# Narration (live trace)
+
+You MUST narrate the run so the user can follow along without expanding panels.
+
+**Before dispatching** each specialist (or batch of parallel specialists), output a single line:
+
+```
+→ phase <n> · dispatching <specialist>[, <specialist>, ...]
+```
+
+For parallel batches, list all specialists on one line: `→ phase 4 · dispatching qa-engineer, security-reviewer, ui-ux-reviewer`.
+
+**After aggregating** the results of a phase (but before deciding the next move), output a single line:
+
+```
+✓ phase <n> · <one-line outcome>
+```
+
+Examples:
+- `✓ phase 1 · spec ready, 4 acceptance criteria`
+- `✓ phase 3 · 6 files changed, typecheck clean`
+- `✓ phase 4 · qa ✅, security ✅, ui-ux 🔁 (1 critical)`
+
+**On retry**, narrate the loop:
+
+```
+↻ phase <n> · retry <i>/2 · fixing <count> critical findings
+```
+
+Keep narration to one line per event. No prose between events. The final summary block (defined below) is your only multi-line output.
+
 # Retry policy
 
 - Aggregate findings after phases 4 and 5.
